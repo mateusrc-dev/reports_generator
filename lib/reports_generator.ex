@@ -30,10 +30,17 @@ defmodule ReportsGenerator do
   # we let's receive a list of files
   # implicit syntax -> &build(&1)
   # in reduce always have each element and accumulator
+  def build_from_many(filenames) when not is_list(filenames) do
+    {:error, "Please provide a list of strings"}
+  end
+
   def build_from_many(filenames) do
-    filenames
-    |> Task.async_stream(fn filenames -> build(filenames) end)
-    |> Enum.reduce(report_acc(), fn {:ok, result}, report -> sum_reports(report, result) end)
+    result =
+      filenames
+      |> Task.async_stream(fn filenames -> build(filenames) end)
+      |> Enum.reduce(report_acc(), fn {:ok, result}, report -> sum_reports(report, result) end)
+
+    {:ok, result}
   end
 
   # guards - we use guards with the word 'when' -> we can use guards when we define the function to extend the pattern matching power

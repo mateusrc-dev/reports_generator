@@ -60,6 +60,22 @@ defmodule ReportsGeneratorTest do
     end
   end
 
+  describe "build_from_many/1" do
+    test "when a file list is provide, builds the report" do
+      # SETUP
+      filenames = ["report_test.csv", "report_test.csv"]
+
+      # EXERCISE
+      response = ReportsGenerator.build_from_many(filenames)
+
+      # this data got caught in the terminal after execution failed
+      expected_response = "banana"
+
+      # ASSERTION
+      assert response == expected_response
+    end
+  end
+
   describe "fetch_higher_cost/2" do
     test "when the option is 'users', returns the user who spent the most" do
       file_name = "report_test.csv"
